@@ -18,4 +18,4 @@ sed -i 's/wireless.radio${devidx}.disabled=1/wireless.radio${devidx}.disabled=0/
 
 # 修改内核版本
 
-# sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.15/g' target/linux/ramips/Makefile
+sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.15/g' target/linux/ramips/Makefile
