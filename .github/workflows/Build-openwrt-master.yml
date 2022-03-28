@@ -29,7 +29,7 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: true
+  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
@@ -112,7 +112,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/dl
+        path: openwrt/bin
 
     - name: Organize files
       id: organize
@@ -142,7 +142,7 @@ jobs:
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress openwrt/dl 2>&1 | tee wetransfer.log
+        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
     - name: Generate release tag
